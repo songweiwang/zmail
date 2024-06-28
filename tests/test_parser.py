@@ -1,4 +1,6 @@
-from zmail.parser import recursive_decode, remove_line_feed_and_whitespace
+import datetime
+
+from zmail.parser import recursive_decode, remove_line_feed_and_whitespace, _fmt_date_tz
 
 
 def test_recursive_decode():
@@ -29,3 +31,9 @@ def test_remove_line_feed_and_whitespace():
 
     assert remove_line_feed_and_whitespace(r' \r\n\r\ngb2312\r\n\r\n ') == 'gb2312'
     assert remove_line_feed_and_whitespace('\r\n \r\n\r\ngb2312\r\n\r\n \r\n') == 'gb2312'
+
+
+def test__fmt_date_tz():
+    assert _fmt_date_tz("+0800UTC") ==datetime.timezone(datetime.timedelta(hours=8))
+    assert _fmt_date_tz("+0700UTC") ==datetime.timezone(datetime.timedelta(hours=7))
+    assert _fmt_date_tz("utc") ==datetime.timezone(datetime.timedelta(hours=8))

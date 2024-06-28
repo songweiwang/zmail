@@ -88,8 +88,11 @@ def parse_header_value(bvalue, encodings) -> str or None:
 
 
 def _fmt_date_tz(tz: str) -> tzinfo or None:
-    match_groups = TIMEZONE_PATTERN.match(tz).groups()
+    matches = TIMEZONE_PATTERN.match(tz)
+    if matches is None:
+        return timezone(timedelta(hours=8))
     _minute_offset = 0
+    match_groups = matches.groups()
     if match_groups[0] == '+':
         for i, v in enumerate(match_groups[1:]):
             if v is None:
